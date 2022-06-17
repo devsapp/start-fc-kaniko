@@ -17,16 +17,15 @@ name: fc-kaniko
 # access 是当前应用所需要的密钥信息配置：
 # 密钥配置可以参考：https://www.serverless-devs.com/serverless-devs/command/config
 # 密钥使用顺序可以参考：https://www.serverless-devs.com/serverless-devs/tool#密钥使用顺序与规范
-access: "rsong"
+access:  "{{ access }}"
 
 vars: # 全局变量
-  region: "cn-hangzhou"
+  region: "{{ region }}"
   service:
-    name: "fc-kaniko"
+    name: "{{ serviceName }}"
     description: 'use kaniko build and push image run in FC'
     internetAccess: true
-    logConfig: auto
-  functionName: buidler
+  functionName: "{{ functionName }}"
 
 services:
   fc-kaniko: # 业务名称/模块名称

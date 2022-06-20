@@ -53,8 +53,7 @@ services:
         name: ${vars.functionName}
         runtime: custom-container
         codeUri: ./code
-        memorySize: 4096
-        instanceType: c1
+        memorySize: 3072
         timeout: 3600
         customContainerConfig:
           image: registry.cn-hangzhou.aliyuncs.com/serverless_devs/fc-kaniko:v0.1

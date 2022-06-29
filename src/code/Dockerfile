@@ -32,14 +32,20 @@ RUN apk --update add \
   curl \
   git \
   jq \
+  python3-dev \
   python3 \
-  py3-pip
+  py3-pip \
+  libffi-dev \
+  musl-dev \
+  gcc
 
 # Create app directory
 RUN mkdir /kaniko/App
 WORKDIR /kaniko/App
 
-RUN pip install flask -i https://mirrors.aliyun.com/pypi/simple/
+RUN pip install --upgrade pip
+RUN pip install --no-use-pep517 cryptography -i https://mirrors.aliyun.com/pypi/simple/
+RUN pip install flask aliyun-python-sdk-core -i https://mirrors.aliyun.com/pypi/simple/
 
 # Bundle app source
 COPY server.py server.py

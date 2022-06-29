@@ -60,7 +60,7 @@ def build_image():
                 credentials = StsTokenCredential(
                     request.headers.get(AK_ID_HEADER), request.headers.get(AK_SECRET_HEADER), request.headers.get(AK_TOKEN_HEADER))
 
-                region = registry[9:][0:-13]
+                region = registry.split('.')[1]
                 client = AcsClient(region_id=region, credential=credentials)
                 req = CommonRequest()
                 req.set_accept_format('json')

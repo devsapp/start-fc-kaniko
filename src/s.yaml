@@ -59,7 +59,7 @@ services:
         customContainerConfig:
           image: registry-vpc.${vars.region}.aliyuncs.com/serverless_devs/fc-kaniko:v0.1
         environmentVariables:
-          TZ: Asia/Shanghai
+          TZ: "{{ timeZone }}"
       triggers:
         - name: httpTrigger
           type: http

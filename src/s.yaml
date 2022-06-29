@@ -24,6 +24,7 @@ vars: # 全局变量
   service:
     name: "{{ serviceName }}"
     description: 'use kaniko build and push image run in FC'
+    role: "{{ roleArn }}"
     internetAccess: true
   functionName: "{{ functionName }}"
 
@@ -56,7 +57,7 @@ services:
         memorySize: 3072
         timeout: 3600
         customContainerConfig:
-          image: registry.cn-hangzhou.aliyuncs.com/serverless_devs/fc-kaniko:v0.1
+          image: registry-vpc.${vars.region}.aliyuncs.com/serverless_devs/fc-kaniko:v0.1
         environmentVariables:
           TZ: Asia/Shanghai
       triggers:

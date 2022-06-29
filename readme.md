@@ -49,20 +49,31 @@
 项目部署完成, 直接使用生成的域名发起 HTTP 调用就可以实现对指定 git 仓库的 Dockfile 工程实现镜像的 build 和 push
 
 ```bash
-$ curl -v  http://builder.fc-kaniko.123456789.cn-hangzhou.fc.devsapp.net  -d '{"url":"https://github.com/rsonghuster/TestKitBackend", "registry":"registry.cn-hangzhou.aliyuncs.com", "usr":"my-usr", "pwd":"my-pwd", "image":"registry.cn-hangzhou.aliyuncs.com/rsong/test:v1"}'
+# build & push image to ACR
+# 当 image 跟当前这个函数属于同一个阿里云账号，不需要传递账户名和密码，函数自动通过 serverrole 获取 ACR 临时账号和密码
+# 如果当前函数是 build & push 镜像到另外一个阿里云账号， 需要传递 usr 和 pwd 参数
+# 比如对于下面这个场景，完整的 acr image 为 registry.ap-southeast-1.aliyuncs.com/rsong/test:v1
+$ curl -v  -H "X-Fc-Invocation-Type: Async" http://builder.fc-kaniko.123456789.ap-southeast-1.fc.devsapp.net  -d '{"url":"https://github.com/rsonghuster/TestKitBackend", "registry":"registry.ap-southeast-1.aliyuncs.com",  "image":"rsong/test:v1", "dockerfile":"Dockerfile"}'
+
+# build & push image to dockerhub
+$ curl -v  -H "X-Fc-Invocation-Type: Async" http://builder.fc-kaniko.123456789.ap-southeast-1.fc.devsapp.net  -d '{"url":"https://github.com/rsonghuster/TestKitBackend", "registry":"https://index.docker.io/v1/", "usr":"my-usr", "pwd":"my-pwd", "image":"rsonghuster/test:v1"}'
 ```
 
-其中：
+> **注意**: 最好将您的函数进行 region 化部署， 比如您使用的 url 是 github， 您的这个函数最好部署到新加坡或其他海外 region; 如果是 gitee, 函数最好部署到上海等国内 region; 如果是 gitlab，取决于您的 gitlab 是在国内还是海外。
 
-- **url** : git url,  如果是私有 github, 可以把 token 一起传过来，public 示例值为 `https://github.com/rsonghuster/TestKitBackend`, private 示例值为 `https://oauth2:access_token@github.com/username/xxx.git`
+其中:
 
-- **registry** : 镜像仓库，比如 dockerhub 或者 阿里云容器镜像服务 ACR，默认值为 dockerhub 的 `https://index.docker.io/v1/`， ACR 的示例值：`registry.cn-hangzhou.aliyuncs.com`
+- **url** : 必需, git url,  如果是私有 github, 可以把 token 一起传过来，public 示例值为 `https://github.com/rsonghuster/TestKitBackend`, private 示例值为 `https://oauth2:access_token@github.com/username/xxx.git`
 
-- **usr** : 对应镜像仓库的账户名
+- **registry** : 可选, 镜像仓库，比如 dockerhub 或者 阿里云容器镜像服务 ACR，默认值为 dockerhub 的 `https://index.docker.io/v1/`， ACR 的示例值：`registry.ap-southeast-1.aliyuncs.com`
 
-- **pwd** : 对应镜像仓库的账户密码
+- **image** : 必需, 镜像名字
 
-- **image** : 完整的镜像名字
+- **dockerfile** : 可选， dockerfile 在 git 仓库中的相对路径，默认为根目录下面的 Dockerfile
+  
+- **usr** : 可选， 当 registry 不是 ACR 的时候必填, 比如 dockerhub 的账户名
+
+- **pwd** : 可选， 当 registry 不是 ACR 的时候必填, 比如 dockerhub 的账户密码
 
 ## 二次开发
 

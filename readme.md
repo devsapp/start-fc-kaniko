@@ -46,7 +46,7 @@
 
 # 应用详情
 
-项目部署完成, 直接使用生成的域名发起 HTTP 调用就可以实现对指定 git 仓库的 Dockfile 工程实现镜像的 build 和 push
+项目部署完成, 直接使用生成的域名发起 HTTP POST 调用就可以实现对指定 git 仓库的 Dockfile 工程实现镜像的 build 和 push
 
 ```bash
 
@@ -57,7 +57,7 @@
 # 如果当前函数是 build & push 镜像到另外一个阿里云账号， 需要传递 usr 和 pwd 参数
 # 比如对于下面这个场景，完整的 acr image 为 registry-vpc.ap-southeast-1.aliyuncs.com/rsong/test:v1
 $ curl -v  -H "X-Fc-Invocation-Type: Async" \
-http://builder.fc-kaniko.123456789.ap-southeast-1.fc.devsapp.net  \ 
+https://builder-fc-kaniko-xxxxx.ap-southeast-1.fcapp.run  \ 
 -d '{
   "url":"https://github.com/rsonghuster/TestKitBackend",
   "registry":"registry-vpc.ap-southeast-1.aliyuncs.com",  
@@ -67,7 +67,7 @@ http://builder.fc-kaniko.123456789.ap-southeast-1.fc.devsapp.net  \
 
 # build & push image to dockerhub
 $ curl -v  -H "X-Fc-Invocation-Type: Async" \
-http://builder.fc-kaniko.123456789.ap-southeast-1.fc.devsapp.net  \
+https://builder-fc-kaniko-xxxxx.ap-southeast-1.fcapp.run  \
 -d '{
   "url":"https://github.com/rsonghuster/TestKitBackend", 
   "registry":"https://index.docker.io/v1/", "usr":"my-usr", 

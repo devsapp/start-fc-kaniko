@@ -1,0 +1,11 @@
+{
+  "url":"https://registry.devsapp.cn/simple/start-fc-custom-container-event-nodejs14/zipball/1.2.15",
+  "type": "devsapp_registry",
+  "instanceId": "cri-xxxxxxx",
+  "image": "xxxx-dev-registry.cn-hangzhou.cr.aliyuncs.com/fengchong-demo/test-xiliu-registry:v1",
+  "dockerfile":"devsapp-package/src/code/Dockerfile",
+  "credentials":{
+    "accessKeyId": "xxxxxx",
+    "accessKeySecret": "yyyyyyyyyy"
+  }
+}

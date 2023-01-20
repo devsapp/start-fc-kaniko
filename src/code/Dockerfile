@@ -1,21 +1,14 @@
-FROM gcr.io/kaniko-project/executor:debug AS kaniko
+FROM golang:1.17
+RUN mkdir /code
+WORKDIR /code
+COPY .  .
+ENV GO111MODULE=on
+RUN GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go build -o fc-kaniko-builder
 
-FROM alpine:3.14.2
-
-RUN apk --no-cache add ca-certificates
-
-RUN mkdir /workspace
-RUN mkdir -p /kaniko/.docker/
-RUN touch /kaniko/.docker/config.json
-COPY --from=kaniko /kaniko/*  /kaniko/
-COPY --from=kaniko /busybox/* /busybox/
-
-ENV HOME /root
-ENV USER root
-ENV PATH $PATH:/usr/local/bin:/kaniko:/busybox
-ENV SSL_CERT_DIR=/kaniko/ssl/certs
-ENV DOCKER_CONFIG /kaniko/.docker/
-ENV DOCKER_CREDENTIAL_GCR_CONFIG /kaniko/.config/gcloud/docker_credential_gcr_config.json
+FROM gcr.io/kaniko-project/executor:debug
+COPY --from=0 /code/fc-kaniko-builder /kaniko/fc-kaniko-builder
+RUN mkdir -p /kaniko/workspace
+ENTRYPOINT ["/kaniko/fc-kaniko-builder"]
 
 # 如果在镜像中直接完成 dockerhub 或者 acr 的 auth, 其中 auth 的值为 $user:$pwd base64 后的值
 # {
@@ -26,30 +19,3 @@ ENV DOCKER_CREDENTIAL_GCR_CONFIG /kaniko/.config/gcloud/docker_credential_gcr_co
 #   }
 # }
 # COPY config.json /kaniko/.docker/config.json
-
-RUN apk --update add \
-  bash \
-  curl \
-  git \
-  jq \
-  python3-dev \
-  python3 \
-  py3-pip \
-  libffi-dev \
-  musl-dev \
-  gcc
-
-# Create app directory
-RUN mkdir /kaniko/App
-WORKDIR /kaniko/App
-
-RUN pip install --upgrade pip
-RUN pip install --no-use-pep517 cryptography -i https://mirrors.aliyun.com/pypi/simple/
-RUN pip install flask aliyun-python-sdk-core -i https://mirrors.aliyun.com/pypi/simple/
-
-# Bundle app source
-COPY server.py server.py
-
-EXPOSE 9000
-ENV FLASK_APP=server
-ENTRYPOINT ["python3", "-u",  "server.py"]

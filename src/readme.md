@@ -46,52 +46,25 @@
 
 # 应用详情
 
-项目部署完成, 直接使用生成的域名发起 HTTP POST 调用就可以实现对指定 git 仓库的 Dockfile 工程实现镜像的 build 和 push
+项目部署完成, 直接调用函数实现对指定 git 仓库 (或者zip包的 url）的 Dockfile 工程实现镜像的 build 和 push
+
+> 调用函数的 payload 请参考 evt-sample 示例, event.json 中的 credentials 中的 ak 用于获取阿里云 ACR/ACREE 仓库的临时账号和密码， 该 ak 一定有 ACR/ACREE GetAuthorizationToken 的权限
 
 ```bash
+# 1. git repo ==> image ==> ACR
+$ s invoke --invocation-type async  -f evt-sample/git-acr.json
 
-# build & push image to ACR 
-# 当 image 跟当前这个函数属于同一个阿里云账号
-# - 不需要传递账户名和密码，函数自动通过 serverrole 获取 ACR 临时账号和密码
-# - 如果是在相同的 region, 可以使用 registry-vpc 内网地址提高 push 的速度和节约公网下行流量费用
-# 如果当前函数是 build & push 镜像到另外一个阿里云账号， 需要传递 usr 和 pwd 参数
-# 比如对于下面这个场景，完整的 acr image 为 registry-vpc.ap-southeast-1.aliyuncs.com/rsong/test:v1
-$ curl -v  -H "X-Fc-Invocation-Type: Async" \
-https://builder-fc-kaniko-xxxxx.ap-southeast-1.fcapp.run  \ 
--d '{
-  "url":"https://github.com/rsonghuster/TestKitBackend",
-  "registry":"registry-vpc.ap-southeast-1.aliyuncs.com",  
-  "image":"rsong/test:v1", 
-  "dockerfile":"Dockerfile"
-}'
+# 2. devsapp registry ==> image ==> ACR
+$ s invoke --invocation-type async  -f evt-sample/registry-acr.json
 
-# build & push image to dockerhub
-$ curl -v  -H "X-Fc-Invocation-Type: Async" \
-https://builder-fc-kaniko-xxxxx.ap-southeast-1.fcapp.run  \
--d '{
-  "url":"https://github.com/rsonghuster/TestKitBackend", 
-  "registry":"https://index.docker.io/v1/", "usr":"my-usr", 
-  "pwd":"my-pwd", 
-  "image":"rsonghuster/test:v1"
-}'
+# 3. git repo ==> image ==> ACREE
+$ s invoke --invocation-type async  -f evt-sample/git-acree.json
+
+# 4. devsapp registry ==> image ==> ACREE
+$ s invoke --invocation-type async  -f evt-sample/registry-acree.json
 ```
 
 > **注意**: 最好将您的函数进行 region 化部署， 比如您使用的 url 是 github， 您的这个函数最好部署到新加坡或其他海外 region; 如果是 gitee, 函数最好部署到上海等国内 region; 如果是 gitlab，取决于您的 gitlab 是在国内还是海外。
-
-其中:
-
-- **url** : 必需, git url,  如果是私有 github, 可以把 token 一起传过来，public 示例值为 `https://github.com/rsonghuster/TestKitBackend`, private 示例值为 `https://oauth2:access_token@github.com/username/xxx.git`
-
-- **registry** : 可选, 镜像仓库，比如 dockerhub 或者 阿里云容器镜像服务 ACR，默认值为 dockerhub 的 `https://index.docker.io/v1/`， ACR 的示例值：`registry.ap-southeast-1.aliyuncs.com`
-
-- **image** : 必需, 镜像名字
-> 注意: 对于 acr 镜像， 比如 `registry.ap-southeast-1.aliyuncs.com/rsong/test:v1`, 只需要是 `rsong/test:v1`,  前面的 registry 不需要写
-
-- **dockerfile** : 可选， dockerfile 在 git 仓库中的相对路径，默认为根目录下面的 Dockerfile
-  
-- **usr** : 可选， 当 registry 不是 ACR 的时候必填, 比如 dockerhub 的账户名
-
-- **pwd** : 可选， 当 registry 不是 ACR 的时候必填, 比如 dockerhub 的账户密码
 
 ## 二次开发
 

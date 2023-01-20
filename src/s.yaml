@@ -54,19 +54,21 @@ services:
         name: ${vars.functionName}
         runtime: custom-container
         codeUri: ./code
-        memorySize: 3072
+        cpu: 4.0
+        memorySize: 8192
+        diskSize: 10240
         timeout: 3600
         customContainerConfig:
           image: registry-vpc.${vars.region}.aliyuncs.com/serverless_devs/fc-kaniko:v0.1
         environmentVariables:
           TZ: "{{ timeZone }}"
-      triggers:
-        - name: httpTrigger
-          type: http
-          config:
-            authType: anonymous
-            methods:
-              - POST
+        asyncConfiguration:
+          #destination:
+            # onSuccess: acs:fc:::services/${vars.service.name}/functions/dest-succ
+          #  onFailure: acs:fc:::services/${vars.service.name}/functions/dest-fail
+          maxAsyncEventAgeInSeconds: 18000
+          maxAsyncRetryAttempts: 0
+          statefulInvocation: true
 
 #  next-function: # 第二个函数的案例，仅供参考
 #    # 如果在当前项目下执行 s deploy，会同时部署模块：

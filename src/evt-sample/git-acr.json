@@ -1,0 +1,10 @@
+{
+  "url":"https://github.com/OhYee/blotter_page.git",
+  "type": "git",
+  "image": "registry.cn-hangzhou.aliyuncs.com/fc-demo2/test-xiliu-git:v10",
+  "dockerfile":"Dockerfile",
+  "credentials":{
+    "accessKeyId": "xxxx",
+    "accessKeySecret": "yyyyy"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "url":"https://gitee.com/aliyunfc/test-event-nodejs14",
+  "type": "git",
+  "instanceId": "cri-xxxxxx",
+  "image": "xxxx-dev-registry.cn-hangzhou.cr.aliyuncs.com/fengchong-demo/test-xiliu-git:v1",
+  "dockerfile":"code/Dockerfile",
+  "credentials":{
+    "accessKeyId": "xxxxxxx",
+    "accessKeySecret": "yyyyyyyy"
+  }
+}

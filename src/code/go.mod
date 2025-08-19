@@ -1,6 +1,6 @@
 module aliyunfc/fc-kaniko-builder
 
-go 1.18
+go 1.24
 
 require (
 	github.com/alibabacloud-go/cr-20181201/v2 v2.0.0

@@ -1,48 +1,70 @@
-# start-fc-kaniko 帮助文档
 
-<p align="center" class="flex justify-center">
-    <a href="https://www.serverless-devs.com" class="ml-1">
-    <img src="http://editor.devsapp.cn/icon?package=start-fc-kaniko&type=packageType">
-  </a>
-  <a href="http://www.devsapp.cn/details.html?name=start-fc-kaniko" class="ml-1">
-    <img src="http://editor.devsapp.cn/icon?package=start-fc-kaniko&type=packageVersion">
-  </a>
-  <a href="http://www.devsapp.cn/details.html?name=start-fc-kaniko" class="ml-1">
-    <img src="http://editor.devsapp.cn/icon?package=start-fc-kaniko&type=packageDownload">
-  </a>
-</p>
+> 注：当前项目为 Serverless Devs 应用，由于应用中会存在需要初始化才可运行的变量（例如应用部署地区、函数名等等），所以**不推荐**直接 Clone 本仓库到本地进行部署或直接复制 s.yaml 使用，**强烈推荐**通过 `s init ${模版名称}` 的方法或应用中心进行初始化，详情可参考[部署 & 体验](#部署--体验) 。
+
+# start-fc-kaniko 帮助文档
 
 <description>
 
->  ***快速部署一个Dockfile编译和push镜像的应用到阿里云函数计算***
+快速部署 build&push 镜像的应用到阿里云函数计算
 
 </description>
 
-<table>
-</table>
 
-<codepre id="codepre">
-</codepre>
+## 资源准备
 
-<deploy>
+使用该项目，您需要有开通以下服务并拥有对应权限：
+
+<service>
+
+
+
+| 服务/业务 |  权限  | 相关文档 |
+| --- |  --- | --- |
+| 函数计算 |  AliyunFCFullAccess | [帮助文档](https://help.aliyun.com/product/2508973.html) [计费文档](https://help.aliyun.com/document_detail/2512928.html) |
+
+</service>
+
+<remark>
+
+
+
+</remark>
+
+<disclaimers>
+
+
+
+</disclaimers>
 
 ## 部署 & 体验
 
 <appcenter>
-
--  :fire:  通过 [Serverless 应用中心](https://fcnext.console.aliyun.com/applications/create?template=start-fc-kaniko) ，
-[![Deploy with Severless Devs](https://img.alicdn.com/imgextra/i1/O1CN01w5RFbX1v45s8TIXPz_!!6000000006118-55-tps-95-28.svg)](https://fcnext.console.aliyun.com/applications/create?template=start-fc-kaniko)  该应用。 
-
+   
+- :fire: 通过 [云原生应用开发平台 CAP](https://functionai.console.aliyun.com/template-detail?template=start-fc-kaniko) ，[![Deploy with Severless Devs](https://img.alicdn.com/imgextra/i1/O1CN01w5RFbX1v45s8TIXPz_!!6000000006118-55-tps-95-28.svg)](https://functionai.console.aliyun.com/template-detail?template=start-fc-kaniko) 该应用。
+   
 </appcenter>
-
-- 通过 [Serverless Devs Cli](https://www.serverless-devs.com/serverless-devs/install) 进行部署：
-    - [安装 Serverless Devs Cli 开发者工具](https://www.serverless-devs.com/serverless-devs/install) ，并进行[授权信息配置](https://www.serverless-devs.com/fc/config) ；
-    - 初始化项目：`s init start-fc-kaniko -d start-fc-kaniko`   
-    - 进入项目，并进行项目部署：`cd start-fc-kaniko && s deploy -y`
-
+<deploy>
+    
+   
 </deploy>
 
+## 案例介绍
+
 <appdetail id="flushContent">
+
+快速部署一个Dockfile编译和push镜像的应用到阿里云函数计算
+
+</appdetail>
+
+
+
+
+
+
+
+## 使用流程
+
+<usedetail id="flushContent">
 
 # 应用详情
 
@@ -66,24 +88,18 @@ $ s invoke --invocation-type async  -f evt-sample/registry-acree.json
 
 > **注意**: 最好将您的函数进行 region 化部署， 比如您使用的 url 是 github， 您的这个函数最好部署到新加坡或其他海外 region; 如果是 gitee, 函数最好部署到上海等国内 region; 如果是 gitlab，取决于您的 gitlab 是在国内还是海外。
 
-## 二次开发
+</usedetail>
+
+## 二次开发指南
+
+<development id="flushContent">
 
 如果您想进行二次开发， 对 code 目录进行开发， 编译新的镜像作为函数 customContainerConfig 的 image 参数即可
 
-</appdetail>
+</development>
 
-<devgroup>
 
-## 开发者社区
 
-您如果有关于错误的反馈或者未来的期待，您可以在 [Serverless Devs repo Issues](https://github.com/serverless-devs/serverless-devs/issues) 中进行反馈和交流。如果您想要加入我们的讨论组或者了解 FC 组件的最新动态，您可以通过以下渠道进行：
 
-<p align="center">
 
-| <img src="https://serverless-article-picture.oss-cn-hangzhou.aliyuncs.com/1635407298906_20211028074819117230.png" width="130px" > | <img src="https://serverless-article-picture.oss-cn-hangzhou.aliyuncs.com/1635407044136_20211028074404326599.png" width="130px" > | <img src="https://serverless-article-picture.oss-cn-hangzhou.aliyuncs.com/1635407252200_20211028074732517533.png" width="130px" > |
-|--- | --- | --- |
-| <center>微信公众号：`serverless`</center> | <center>微信小助手：`xiaojiangwh`</center> | <center>钉钉交流群：`33947367`</center> | 
 
-</p>
-
-</devgroup>

@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/alibabacloud-go/tea/tea"
 	"os"
 	"os/exec"
 	"path"
@@ -43,6 +44,11 @@ func handler(ctx *gr.FCContext, event []byte) ([]byte, error) {
 		panic(err)
 	}
 	fcLogger.Info("start set acr auth ...")
+	builderEvent.Credentials = AliyunCredentials{
+		AccessKeyId:     tea.String(ctx.Credentials.AccessKeyID),
+		AccessKeySecret: tea.String(ctx.Credentials.AccessKeySecret),
+		SecurityToken:   tea.String(ctx.Credentials.SecurityToken),
+	}
 	err = SetAcrAuth(&builderEvent, fcLogger)
 	if err != nil {
 		panic(err)

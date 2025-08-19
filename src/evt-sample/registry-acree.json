@@ -3,9 +3,5 @@
   "type": "devsapp_registry",
   "instanceId": "cri-xxxxxxx",
   "image": "xxxx-dev-registry.cn-hangzhou.cr.aliyuncs.com/fengchong-demo/test-xiliu-registry:v1",
-  "dockerfile":"devsapp-package/src/code/Dockerfile",
-  "credentials":{
-    "accessKeyId": "xxxxxx",
-    "accessKeySecret": "yyyyyyyyyy"
-  }
+  "dockerfile":"devsapp-package/src/code/Dockerfile"
 }

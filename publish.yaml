@@ -35,6 +35,7 @@ Parameters:
       description: 创建应用所在的地区
       enum:
         - cn-hangzhou
+        - cn-shanghai
         - us-east-1
   
     functionName:
